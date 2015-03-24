@@ -21,74 +21,81 @@ import java.util.Comparator;
 import java.util.Random;
 
 class MemoryLoad {
-  static class StringInterval implements Interval<String> {
-    public String string;
-    StringInterval(String string) {
-      this.string = string;
+    static class StringInterval implements Interval<String> {
+        public String string;
+
+        StringInterval(String string) {
+            this.string = string;
+        }
+
+        @Override
+        public String getLower() {
+            return this.string;
+        }
+
+        @Override
+        public String getUpper() {
+            return this.string;
+        }
+
+        static final Comparator<Interval<String>> comparator = new Comparator<Interval<String>>() {
+            @Override
+            public int compare(Interval<String> o1, Interval<String> o2) {
+                return o1.getLower().compareTo(o2.getLower());
+            }
+        };
     }
-    
-    @Override
-    public String getLower() { return this.string; }
-    @Override
-    public String getUpper() { return this.string; }
-    static final Comparator<Interval<String>> comparator = new Comparator<Interval<String>>() {
-      @Override
-      public int compare(Interval<String> o1, Interval<String> o2) {
-        return o1.getLower().compareTo(o2.getLower());
-      }
-    };
-  }
 
-  public static long memUsage() throws InterruptedException {
-    collectPoop();
-    collectPoop();
-    Runtime runtime = Runtime.getRuntime();
-    long totalMemory = runtime.totalMemory();
+    public static long memUsage() throws InterruptedException {
+        collectPoop();
+        collectPoop();
+        Runtime runtime = Runtime.getRuntime();
+        long totalMemory = runtime.totalMemory();
 
-    collectPoop();
-    collectPoop();
-	long freeMemory = runtime.freeMemory();
-	System.out.println("Total memory:" + totalMemory + " Free memory: " + freeMemory);
-    return totalMemory - freeMemory;
-  }
+        collectPoop();
+        collectPoop();
+        long freeMemory = runtime.freeMemory();
+        System.out.println("Total memory:" + totalMemory + " Free memory: " + freeMemory);
+        return totalMemory - freeMemory;
+    }
 
-	private static void collectPoop() throws InterruptedException {
-		System.gc();
-		Thread.sleep(500);
-		System.runFinalization();
-		Thread.sleep(500);
-	}
+    private static void collectPoop() throws InterruptedException {
+        System.gc();
+        Thread.sleep(500);
+        System.runFinalization();
+        Thread.sleep(500);
+    }
 
-	/**
-	 * A node in the interval tree
-	 */
-	static class Something {
-		Something left;
-		Something right;
-		Object  object;
-		int balanceFactor;
-	}
+    /**
+     * A node in the interval tree
+     */
+    static class Something {
+        Something left;
+        Something right;
+        Object object;
+        int balanceFactor;
+    }
 
-  public static void main(String[] args) throws InterruptedException {
-    int testSize = 500000;
-    long[] memUsage = new long[2];
-    Random rand = new Random();
-    final int sampleSize = 500;
+    public static void main(String[] args) throws InterruptedException {
+        int testSize = 500000;
+        long[] memUsage = new long[2];
+        Random rand = new Random();
+        final int sampleSize = 500;
 
-    long size = MyAgent.getObjectSize(new IntervalNode<String>());
-    System.out.println("agentsize IntervalNode<String>:" + size);
-    size = MyAgent.getObjectSize(new com.binarydreamers.trees.IntervalTree.IntervalNode<String>());
-    System.out.println("agentsize IntervalTree.IntervalNode<String>:" + size);
+        long size = MyAgent.getObjectSize(new IntervalNode<String>());
+        System.out.println("agentsize IntervalNode<String>:" + size);
+        size = MyAgent.getObjectSize(new com.binarydreamers.trees.IntervalTree.IntervalNode<String, Interval<String>>());
+        System.out.println("agentsize IntervalTree.IntervalNode<String>:" + size);
 
-    size = MyAgent.getObjectSize(new Object());
-    System.out.println("agentsize Object:" + size);
-    size = MyAgent.getObjectSize(new Something());
-    System.out.println("agentsize Something:" + size);
+        size = MyAgent.getObjectSize(new Object());
+        System.out.println("agentsize Object:" + size);
+        size = MyAgent.getObjectSize(new Something());
+        System.out.println("agentsize Something:" + size);
 
-    BinaryTree.IntervalNode<String>[] array1 = (IntervalNode<String>[]) new BinaryTree.IntervalNode<?>[100];
-    size = MyAgent.getObjectSize(array1);
-    System.out.println("agentsize IntervalTree.IntervalNode<String>[100]:" + size);
-    
+        BinaryTree.IntervalNode<String>[] array1 = (IntervalNode<String>[]) new BinaryTree.IntervalNode<?>[100];
+        size = MyAgent.getObjectSize(array1);
+        System.out.println("agentsize IntervalTree.IntervalNode<String>[100]:" + size);
+
 //    IntervalNode<?>[] asdf = new IntervalNode<?>[sampleSize];
 //    memUsage[0] = memUsage();
 //    for(int i = 0; i < sampleSize; i++) {
@@ -138,6 +145,6 @@ class MemoryLoad {
 //    memUsage[1] = memUsage();
 //    System.out.println("Usage: " + ((memUsage[1]-memUsage[0])/(float)sampleSize));
 
-  
-  }
+
+    }
 }
