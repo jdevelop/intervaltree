@@ -356,7 +356,7 @@ public class IntervalTreeTest {
 
         LongInterval search = new LongInterval(100, 350);
         List<Interval<Long>> searchInterval = testTree.searchInterval(search);
-        assertEquals(3, searchInterval.size());
+        assertEquals(4, searchInterval.size());
     }
 
     // Ran enough times to verify that all legs of the remove/rebalance worked
