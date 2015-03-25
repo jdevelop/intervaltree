@@ -483,6 +483,10 @@ public class IntervalTreeTest {
         assertEquals(2, intervals.size());
 
         List<SampleInterval> result = sampleIntervals.searchInterval(new IntegerInterval(100, 110));
-        assertEquals(1, result.size());
+        assertEquals(3, result.size());
+        HashSet<SampleInterval> intervalSet = new HashSet<SampleInterval>(result);
+        assertTrue(intervalSet.contains(new SampleInterval("rule", 110, 115)));
+        assertTrue(intervalSet.contains(new SampleInterval("you", 101, 120)));
+        assertTrue(intervalSet.contains(new SampleInterval("Hello", 1, 100)));
     }
 }

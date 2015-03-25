@@ -1135,8 +1135,8 @@ public class IntervalTree<V extends Comparable<V>, I extends Interval<V>> implem
         searchIntervalRecursive(interval, node.left, storage);
 
         // Do we overlap? s.low <= n.high && n.low <= s.high; where s = interval, n = node
-        if (interval.getLower().compareTo(node.object.getUpper()) < 0
-                && node.object.getLower().compareTo(interval.getUpper()) < 0) {
+        if (interval.getLower().compareTo(node.object.getUpper()) <= 0
+                && node.object.getLower().compareTo(interval.getUpper()) <= 0) {
             storage.add(node.object);
         }
 
